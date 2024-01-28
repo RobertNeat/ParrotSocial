@@ -4,7 +4,12 @@
 Initial dependencies:
 	https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.2.2&packaging=jar&jvmVersion=21&groupId=com.example&artifactId=ParrotSocial&name=ParrotSocial&description=ParrotSocial%20social%20media%20platform&packageName=com.example.ParrotSocial&dependencies=lombok,web,data-mongodb
 Additional dependencies:
-
+	https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui/2.2.0
+	https://mvnrepository.com/artifact/commons-codec/commons-codec/1.16.0
+	https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+	https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+	https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+	https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -25,6 +30,26 @@ Additional dependencies:
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency><!--https://www.baeldung.com/spring-rest-openapi-documentation-->
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.16.0</version>
+		</dependency><!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -39,6 +64,31 @@ Additional dependencies:
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
