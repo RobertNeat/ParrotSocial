@@ -25,3 +25,16 @@ public class ParrotSocialApplication {
  * -jako referencja  --- https://docs.swagger.io/swagger-core/v1.5.0/apidocs/
  * -adnotacje ktore mozna używać --- https://springdoc.org/#migrating-from-springfox
  * */
+
+
+/*
+* Mongodb queries construction:
+* https://www.baeldung.com/queries-in-spring-data-mongodb
+* https://www.baeldung.com/spring-data-mongodb-tutorial
+* */
+
+
+/*
+* Other approaches to JWT in springboot (i did not try them as the 29.01.2024
+* https://www.baeldung.com/spring-security-oauth-jwt
+* */

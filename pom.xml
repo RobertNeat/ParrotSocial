@@ -37,11 +37,6 @@ Additional dependencies:
 			<version>2.2.0</version>
 		</dependency><!--https://www.baeldung.com/spring-rest-openapi-documentation-->
 
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.16.0</version>
-		</dependency><!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 		<dependency>

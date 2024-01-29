@@ -33,8 +33,8 @@ public class User implements UserDetails { //implementation of the spring securi
     private String profile_picture="";
     private String cover_picture="";
     private String description="";
-    private City inhabitancy;
-    private City provenance;
+    private String inhabitancy;
+    private String provenance;
     private String relationship_status="";
     private String education="";
     private String work="";
