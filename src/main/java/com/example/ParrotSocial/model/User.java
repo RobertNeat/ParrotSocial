@@ -30,16 +30,16 @@ public class User implements UserDetails { //implementation of the spring securi
     private String password;
     private List<String> followers;
     private List<String> followings;
-    private String profile_picture="";
-    private String cover_picture="";
+    private String profilepicture="";//profile_picture <--No snake case allowed!!
+    private String coverpicture="";//cover_picture
     private String description="";
     private String inhabitancy;
     private String provenance;
     private String relationship_status="";
     private String education="";
     private String work="";
-    private Date last_login_logout;
-    private Boolean isOnline=false;
+    private Date lastloginlogout;
+    private Boolean isonline=false;
 
     //fields that spring security needs:
     private Role role; //?? na filmiku typ miał dopisane, żeby baza sql-owa zapisywała enum jako string

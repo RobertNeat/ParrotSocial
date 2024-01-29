@@ -1,5 +1,6 @@
 package com.example.ParrotSocial.controller;
 
+import com.example.ParrotSocial.config.FileUploadProperties;
 import com.example.ParrotSocial.model.Role;
 import com.example.ParrotSocial.model.User;
 import com.example.ParrotSocial.repository.UserRepository;
@@ -8,15 +9,25 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @CrossOrigin("http://127.0.0.1:5500")
 @RestController
@@ -25,8 +36,8 @@ public class UserController {
     private final UserRepository repository;
     private final MongoTemplate mongoTemplate;
 
-    //authService
-    //fileuploadProperties
+    @Autowired
+    private FileUploadProperties fileUploadProperties;
 
     public UserController(UserRepository repository,MongoTemplate mongoTemplate)
     {
@@ -130,8 +141,62 @@ public class UserController {
     }
 
 
-    //wysłanie zdjęcia profilowego
-    //wysłanie zdjęcia okładki profilu
+    //wysłanie zdjęcia profilowego/okładki
+    @PostMapping(path="/picture/{type}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadPicture(@RequestParam("user_id") String user_id, @RequestParam("picture")MultipartFile file, @PathVariable("type") String type){
+        Optional<User> query_user = repository.findById(user_id);
+        if(query_user.isPresent()){
+            User user = query_user.get();
+            String filePath = Paths.get(fileUploadProperties.getPath()).toAbsolutePath().toString();
+            //String filePath = fileUploadProperties.getPath();
+
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = StringUtils.getFilenameExtension(originalFilename);
+            String randomFilename = UUID.randomUUID().toString()+"."+fileExtension;
+
+            try{
+                file.transferTo(new File(filePath+randomFilename));
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+
+            if(type.equals("profile".toString())){
+                user.setProfilepicture(randomFilename);
+            }else{//cover
+                user.setCoverpicture(randomFilename);
+            }
+
+            User saved_user = repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body(saved_user);
+
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+
+    //pobranie zdjęcia profilowego/okładki
+    @GetMapping(path="/picture/{type}/{picture_name}", produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<?> downloadPicture(@PathVariable("type") String type, @PathVariable("picture_name") String picture_name){
+        Optional<User> user_query = (type.equals("profile"))//(type=="profile")
+                ? repository.findByProfilepicture(picture_name)
+                : repository.findByCoverpicture(picture_name);
+
+        if(user_query.isPresent()){
+            String filePath = (type.equals("profile".toString()))
+                    ? Paths.get(fileUploadProperties.getPath()).toAbsolutePath()+user_query.get().getProfilepicture()
+                    : Paths.get(fileUploadProperties.getPath()).toAbsolutePath()+user_query.get().getCoverpicture();
+
+            try{
+                byte[] image = Files.readAllBytes(new File(filePath).toPath());
+                return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("image/jpg")).body(image);
+            }catch(Exception e) {
+                System.out.println(e.getMessage());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Image reading error");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 
 
     //usunięcie użytkownika (wyczyszczenie danych)
