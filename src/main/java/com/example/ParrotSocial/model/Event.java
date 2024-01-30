@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Document(collection = "event")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
@@ -21,6 +23,6 @@ public class Event {
     private String description="";
     private String image="";
     private List<String> members;
-    private Date start_date;
-    private Date end_date;
+    private LocalDateTime start_date;
+    private LocalDateTime end_date;
 }

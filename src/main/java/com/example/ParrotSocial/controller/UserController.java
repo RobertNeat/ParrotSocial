@@ -82,7 +82,7 @@ public class UserController {
             }
     )
     @PutMapping("/{user_id}")
-    public ResponseEntity<User> update(@PathVariable("user_id") String user_id,@RequestBody User updateUser){//NIE MAM ID???
+    public ResponseEntity<User> update(@PathVariable("user_id") String user_id,@RequestBody User updateUser){
 
             //trzeba sprawdzić czy updateUser.id istnieje w bazie danych
             Optional<User> userFromDatabase = repository.findById(user_id);
@@ -148,7 +148,6 @@ public class UserController {
         if(query_user.isPresent()){
             User user = query_user.get();
             String filePath = Paths.get(fileUploadProperties.getPath()).toAbsolutePath().toString();
-            //String filePath = fileUploadProperties.getPath();
 
             String originalFilename = file.getOriginalFilename();
             String fileExtension = StringUtils.getFilenameExtension(originalFilename);
