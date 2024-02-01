@@ -1,8 +1,10 @@
 package com.example.ParrotSocial.controller;
 
 import com.example.ParrotSocial.config.FileUploadProperties;
+import com.example.ParrotSocial.model.City;
 import com.example.ParrotSocial.model.Role;
 import com.example.ParrotSocial.model.User;
+import com.example.ParrotSocial.repository.CityRepository;
 import com.example.ParrotSocial.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,14 +36,16 @@ import java.util.UUID;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserRepository repository;
+    private final CityRepository city_repository;
     private final MongoTemplate mongoTemplate;
 
     @Autowired
     private FileUploadProperties fileUploadProperties;
 
-    public UserController(UserRepository repository,MongoTemplate mongoTemplate)
+    public UserController(UserRepository repository, CityRepository cityRepository, MongoTemplate mongoTemplate)
     {
         this.repository = repository;
+        this.city_repository = cityRepository;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -103,6 +107,16 @@ public class UserController {
                         .work(updateUser.getWork())
                         .role(Role.USER)
                         .build();
+
+                if(city_repository.findByName(saveUser.getInhabitancy()).isEmpty()){
+                    City new_city = City.builder().name(saveUser.getInhabitancy()).build();
+                    city_repository.save(new_city);
+                }
+
+                if(city_repository.findByName(saveUser.getProvenance()).isEmpty()){
+                    City new_city = City.builder().name(saveUser.getProvenance()).build();
+                    city_repository.save(new_city);
+                }
 
                 return ResponseEntity.ok(repository.save(saveUser));
             }else{

@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class City {
     @Id
     private String city_id;
