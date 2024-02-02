@@ -1,6 +1,7 @@
 package com.example.ParrotSocial.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -12,11 +13,12 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Message {
     @Id
-    private String message_id;
-    private String conversation_id;
-    private String sender_id;
+    private String messageid;
+    private String conversationid;
+    private String senderid;
     private String text;
     private String image;
     private LocalDateTime send_date;

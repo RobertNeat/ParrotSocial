@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection="conversation")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Conversation {
     @Id
-    private String conversation_id;
-    private List<User> members;
-    private Date creationDate;
+    private String conversationid;
+    private List<String> members;
+    private LocalDateTime creationDate;
 }
