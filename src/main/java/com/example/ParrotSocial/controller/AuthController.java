@@ -3,7 +3,7 @@ package com.example.ParrotSocial.controller;
 
 import com.example.ParrotSocial.request.AuthenticationRequest;
 import com.example.ParrotSocial.request.RegisterRequest;
-import com.example.ParrotSocial.response.AuthenticationReposnse;
+import com.example.ParrotSocial.response.AuthenticationResponse;
 import com.example.ParrotSocial.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationReposnse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationReposnse> authenticate(@RequestBody AuthenticationRequest request){
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(service.authenticate(request));
     }
 

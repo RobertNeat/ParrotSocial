@@ -1,15 +1,15 @@
 package com.example.ParrotSocial.controller;
 
-import com.example.ParrotSocial.model.Conversation;
 import com.example.ParrotSocial.model.Message;
-import com.example.ParrotSocial.repository.ConversationRepository;
-import com.example.ParrotSocial.repository.MessageRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.ParrotSocial.model.Conversation;
+import com.example.ParrotSocial.repository.MessageRepository;
+import com.example.ParrotSocial.repository.ConversationRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 @CrossOrigin("http://127.0.0.1:5500")
 @RestController
@@ -67,10 +67,10 @@ public class ConversationController {
     public ResponseEntity<?> deleteConversation(@PathVariable("conversation_id") String conversation_id){
         Optional<Conversation> query_conversation = repository.findById(conversation_id);
         if(query_conversation.isPresent()){
-            List<Message> conversation_list  = messageRepository.findByConversationid(query_conversation.get().getConversationid());
+            List<Message> conversation_list  = messageRepository.findByConversationId(query_conversation.get().getConversationId());
             for (Message current_message:
                  conversation_list) {
-                messageRepository.deleteById(current_message.getMessageid());
+                messageRepository.deleteById(current_message.getMessageId());
             }
             repository.delete(query_conversation.get());
             return ResponseEntity.noContent().build();

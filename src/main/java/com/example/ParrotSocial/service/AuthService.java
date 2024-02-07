@@ -7,7 +7,7 @@ import com.example.ParrotSocial.model.User;
 import com.example.ParrotSocial.repository.UserRepository;
 import com.example.ParrotSocial.request.AuthenticationRequest;
 import com.example.ParrotSocial.request.RegisterRequest;
-import com.example.ParrotSocial.response.AuthenticationReposnse;
+import com.example.ParrotSocial.response.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationReposnse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -30,12 +30,12 @@ public class AuthService {
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationReposnse.builder()
+        return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-    public AuthenticationReposnse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -45,7 +45,7 @@ public class AuthService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();     //! -- zadbać o obsłużenie wyjątku w razie zlej autentykacji
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationReposnse.builder()
+        return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }

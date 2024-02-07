@@ -1,20 +1,21 @@
 package com.example.ParrotSocial.model;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "city")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class City {
     @Id
-    private String city_id;
+    private String cityId;
     private String name;
 }

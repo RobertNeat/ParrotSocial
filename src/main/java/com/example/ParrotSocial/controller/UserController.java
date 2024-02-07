@@ -57,7 +57,7 @@ public class UserController {
         if(!userCredentials.getEmail().isEmpty() && !userCredentials.getPassword().isEmpty()) {
             Optional<User> userFromDatabase = repository.findByEmail(userCredentials.getEmail());
             if (userFromDatabase.isPresent()){
-                return ResponseEntity.ok(userFromDatabase.get().getUser_id());
+                return ResponseEntity.ok(userFromDatabase.get().getUserId());
             }
             return ResponseEntity.notFound().build();
         }
@@ -94,13 +94,13 @@ public class UserController {
             if(userFromDatabase.isPresent()) {
 
                 User saveUser = User.builder()
-                        .user_id(user_id)
+                        .userId(user_id)
                         .email(userFromDatabase.get().getEmail())
                         .password(userFromDatabase.get().getPassword())
                         .name(updateUser.getName())
                         .surname(updateUser.getSurname())
                         .description(updateUser.getDescription())
-                        .relationship_status(updateUser.getRelationship_status())
+                        .relationshipStatus(updateUser.getRelationshipStatus())
                         .inhabitancy(updateUser.getInhabitancy())
                         .provenance(updateUser.getProvenance())
                         .education(updateUser.getEducation())
@@ -174,9 +174,9 @@ public class UserController {
             }
 
             if(type.equals("profile".toString())){
-                user.setProfilepicture(randomFilename);
+                user.setProfilePicture(randomFilename);
             }else{//cover
-                user.setCoverpicture(randomFilename);
+                user.setCoverPicture(randomFilename);
             }
 
             User saved_user = repository.save(user);
@@ -191,13 +191,13 @@ public class UserController {
     @GetMapping(path="/picture/{type}/{picture_name}", produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<?> downloadPicture(@PathVariable("type") String type, @PathVariable("picture_name") String picture_name){
         Optional<User> user_query = (type.equals("profile"))//(type=="profile")
-                ? repository.findByProfilepicture(picture_name)
-                : repository.findByCoverpicture(picture_name);
+                ? repository.findByProfilePicture(picture_name)
+                : repository.findByCoverPicture(picture_name);
 
         if(user_query.isPresent()){
             String filePath = (type.equals("profile".toString()))
-                    ? Paths.get(fileUploadProperties.getPath()).toAbsolutePath()+user_query.get().getProfilepicture()
-                    : Paths.get(fileUploadProperties.getPath()).toAbsolutePath()+user_query.get().getCoverpicture();
+                    ? Paths.get(fileUploadProperties.getPath()).toAbsolutePath()+user_query.get().getProfilePicture()
+                    : Paths.get(fileUploadProperties.getPath()).toAbsolutePath()+user_query.get().getCoverPicture();
 
             try{
                 byte[] image = Files.readAllBytes(new File(filePath).toPath());
@@ -219,7 +219,7 @@ public class UserController {
         if(searchedUser.isPresent()){
 
             User clearedUser = User.builder()
-                    .user_id(searchedUser.get().getUser_id())
+                    .userId(searchedUser.get().getUserId())
                     .name(searchedUser.get().getName())
                     .email("")
                     .password("")

@@ -43,8 +43,8 @@ public class EventController {
                 .title(event.getTitle())
                 .description(event.getDescription())
                 .members(Collections.emptyList())
-                .start_date(event.getStart_date())
-                .end_date(event.getEnd_date())
+                .startDate(event.getStartDate())
+                .endDate(event.getEndDate())
                 .build();
 
         return ResponseEntity.ok(repository.save(event));
@@ -61,7 +61,7 @@ public class EventController {
 
             while (iterator.hasNext()) {
                 Event event = iterator.next();
-                if (event.getEnd_date().isBefore(currentDate)) {
+                if (event.getEndDate().isBefore(currentDate)) {
                     iterator.remove();
                     repository.delete(event);
                 }

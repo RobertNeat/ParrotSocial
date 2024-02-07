@@ -1,27 +1,26 @@
 package com.example.ParrotSocial.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
+import java.util.Collection;
+import java.time.LocalDateTime;
 
 @Document(collection = "user")
 @Data
-@Builder //??idk if i will use it
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL) //only non-null fields from object will be stored in mongodb
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements UserDetails { //implementation of the spring security for authentication (jwt) and authorization
     @Id
-    private String user_id;
+    private String userId;
     private String name="";
     private String surname="";
     @NonNull
@@ -30,19 +29,20 @@ public class User implements UserDetails { //implementation of the spring securi
     private String password;
     private List<String> followers;
     private List<String> followings;
-    private String profilepicture="";//profile_picture <--No snake case allowed!!
-    private String coverpicture="";//cover_picture
+    private String profilePicture="";
+    private String coverPicture="";
     private String description="";
+    @SuppressWarnings("SpellCheckingInspection")
     private String inhabitancy;
     private String provenance;
-    private String relationship_status="";
+    private String relationshipStatus="";
     private String education="";
     private String work="";
-    private Date lastloginlogout;
-    private Boolean isonline=false;
+    private LocalDateTime lastLoginLogout;
+    private Boolean isOnline=false;
 
     //fields that spring security needs:
-    private Role role; //?? na filmiku typ miał dopisane, żeby baza sql-owa zapisywała enum jako string
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

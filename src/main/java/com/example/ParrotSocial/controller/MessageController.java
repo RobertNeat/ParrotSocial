@@ -1,19 +1,16 @@
 package com.example.ParrotSocial.controller;
 
-
-import com.example.ParrotSocial.config.FileUploadProperties;
-import com.example.ParrotSocial.model.Conversation;
-import com.example.ParrotSocial.model.Event;
-import com.example.ParrotSocial.model.Message;
-import com.example.ParrotSocial.repository.ConversationRepository;
-import com.example.ParrotSocial.repository.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
+import com.example.ParrotSocial.model.Message;
+import org.springframework.http.ResponseEntity;
+import com.example.ParrotSocial.model.Conversation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.ParrotSocial.config.FileUploadProperties;
+import com.example.ParrotSocial.repository.MessageRepository;
+import com.example.ParrotSocial.repository.ConversationRepository;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -30,11 +27,11 @@ public class MessageController {
 
     private final MessageRepository repository;
     private final ConversationRepository conversationRepository;
-    @Autowired
     private FileUploadProperties fileUploadProperties;
-    public MessageController(MessageRepository repository, ConversationRepository conversationRepository) {
+    public MessageController(MessageRepository repository, ConversationRepository conversationRepository,FileUploadProperties fileUploadProperties) {
         this.repository = repository;
         this.conversationRepository = conversationRepository;
+        this.fileUploadProperties = fileUploadProperties;
     }
 
 
@@ -53,7 +50,7 @@ public class MessageController {
     public ResponseEntity<?> getMessagesForConvo(@PathVariable("conversation_id") String conversation_id){
         Optional<Conversation> query_conversation = conversationRepository.findById(conversation_id);
         if(query_conversation.isPresent()){
-            List<Message> message_list = repository.findByConversationid(conversation_id);
+            List<Message> message_list = repository.findByConversationId(conversation_id);
             return ResponseEntity.ok(message_list);
         }
         return ResponseEntity.notFound().build();
@@ -66,11 +63,11 @@ public class MessageController {
         if(query_conversation.isPresent()){
             LocalDateTime currentDate = LocalDateTime.now();
             Message save_message = Message.builder()
-                    .conversationid(conversation_id)
-                    .senderid(message.getSenderid())
+                    .conversationId(conversation_id)
+                    .senderId(message.getSenderId())
                     .text(message.getText())
                     .image(message.getImage())
-                    .send_date(currentDate)
+                    .sendDate(currentDate)
                     .build();
             return ResponseEntity.ok(repository.save(save_message));
         }
@@ -127,9 +124,9 @@ public class MessageController {
         if(query_message.isPresent()){
 
             Message save_message = query_message.get();
-            if(message.getMessageid() != null)      {save_message.setMessageid(message.getMessageid());}
-            if(message.getConversationid() != null) {save_message.setConversationid(message.getConversationid());}
-            if(message.getSenderid() != null)       {save_message.setSenderid(message.getSenderid());}
+            if(message.getMessageId() != null)      {save_message.setMessageId(message.getMessageId());}
+            if(message.getConversationId() != null) {save_message.setConversationId(message.getConversationId());}
+            if(message.getSenderId() != null)       {save_message.setSenderId(message.getSenderId());}
             if(message.getText() != null)           {save_message.setText(message.getText());}
             if(message.getImage() != null)          {save_message.setImage(message.getImage());}
 

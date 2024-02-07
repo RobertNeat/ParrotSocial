@@ -1,25 +1,26 @@
 package com.example.ParrotSocial.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import lombok.Builder;
 import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "message")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
     @Id
-    private String messageid;
-    private String conversationid;
-    private String senderid;
+    private String messageId;
+    private String conversationId;
+    private String senderId;
     private String text;
     private String image;
-    private LocalDateTime send_date;
+    private LocalDateTime sendDate;
 }
