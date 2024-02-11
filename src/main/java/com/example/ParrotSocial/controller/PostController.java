@@ -1,8 +1,6 @@
 package com.example.ParrotSocial.controller;
 
 import com.example.ParrotSocial.config.FileUploadProperties;
-import com.example.ParrotSocial.model.Group;
-import com.example.ParrotSocial.model.Message;
 import com.example.ParrotSocial.model.Post;
 import com.example.ParrotSocial.model.User;
 import com.example.ParrotSocial.repository.GroupRepository;
@@ -33,7 +31,6 @@ public class PostController {
     private final PostRepository repository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final MongoTemplate mongoTemplate;
     private FileUploadProperties fileUploadProperties;
 
     public PostController(PostRepository repository,
@@ -44,7 +41,6 @@ public class PostController {
         this.repository = repository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
-        this.mongoTemplate = mongoTemplate;
         this.fileUploadProperties = fileUploadProperties;
     }
 
