@@ -20,22 +20,35 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        final String[] AUTH_WHITELIST = {
+                // -- Swagger UI v2
+                "/v2/api-docs",
+                "/swagger-resources",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**",
+                // -- Swagger UI v3 (OpenAPI)
+                "/v3/api-docs/**",
+                "/swagger-ui/**"
+                // other public endpoints of your API may be appended to this array
+        };
+
         http
             .csrf()
             .disable()
             .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
+            .requestMatchers(AUTH_WHITELIST).permitAll()//permit to access swagger
+            .requestMatchers("/api/auth/**").permitAll()
+            .anyRequest().authenticated()
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-
 
         return http.build();
     }

@@ -14,8 +14,8 @@ public class ParrotSocialApplication {
 
 /*
  * Aby skorzystać z dokumentacji swagger z paczki OpenApi (OpenApi zawiera w sobie Swagger) należy:
- * - w przeglądarce (GET):http://localhost:8080/swagger (domyślnie: http://localhost:8080/v3/api-docs)
- * - w przeglądarce (HTML UI): http://localhost:8080/swagger.html (domyślnie: http://localhost:8080/swagger-ui/index.html)
+ * - w przeglądarce (GET): http://localhost:8080/v3/api-docs
+ * - w przeglądarce (HTML UI): http://localhost:8080/swagger-ui/index.html
  * (^ domyślne trasy dokumentacji zmienione za pomocą application.properties)
  * */
 
@@ -24,6 +24,7 @@ public class ParrotSocialApplication {
  * Adnotacje swagger ( a w naszym przypadku springdoc):
  * -jako referencja  --- https://docs.swagger.io/swagger-core/v1.5.0/apidocs/
  * -adnotacje ktore mozna używać --- https://springdoc.org/#migrating-from-springfox
+ * - problemy z dostępnością swaggera przy spring security: https://stackoverflow.com/questions/37671125/how-to-configure-spring-security-to-allow-swagger-url-to-be-accessed-without-aut
  * */
 
 
