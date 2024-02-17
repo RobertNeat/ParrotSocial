@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("http://127.0.0.1:5500")
+@CrossOrigin("http://127.0.0.1:3000")//5500
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {

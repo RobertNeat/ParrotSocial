@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
 
-@CrossOrigin("http://127.0.0.1:5500")
+@CrossOrigin("http://127.0.0.1:3000")//5500
 @RestController
 @RequestMapping("/api/conversation")
 public class ConversationController {

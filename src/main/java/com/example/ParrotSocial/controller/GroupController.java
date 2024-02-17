@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@CrossOrigin("http://127.0.0.1:5500")
+@CrossOrigin("http://127.0.0.1:3000")//5500
 @RestController
 @RequestMapping("/api/group")
 public class GroupController {
