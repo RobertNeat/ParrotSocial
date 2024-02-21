@@ -1,12 +1,10 @@
 package com.example.ParrotSocial.controller;
 
+import com.example.ParrotSocial.model.City;
 import com.example.ParrotSocial.repository.CityRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://127.0.0.1:3000")//5500
 @RestController
@@ -24,5 +22,10 @@ public class CityController {
     @GetMapping
     public ResponseEntity<?> getList(){
         return ResponseEntity.ok(repository.findAll());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addCity(@RequestBody City city){
+        return ResponseEntity.ok(repository.save(city));
     }
 }
