@@ -39,7 +39,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) //token valid 24 hours and 1000 miliseconds
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) //token valid 24 hours and 1000 miliseconds
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
