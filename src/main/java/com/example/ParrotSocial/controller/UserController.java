@@ -105,6 +105,8 @@ public class UserController {
                         .provenance(updateUser.getProvenance())
                         .education(updateUser.getEducation())
                         .work(updateUser.getWork())
+                        .coverPicture(updateUser.getCoverPicture())
+                        .profilePicture(updateUser.getProfilePicture())
                         .role(Role.USER)
                         .build();
 
