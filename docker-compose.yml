@@ -1,0 +1,72 @@
+services:
+  # PostgreSQL Database Service
+  database:
+    build:
+      context: ./ParrotDatabase
+      dockerfile: Dockerfile
+    container_name: project-database
+    environment:
+      POSTGRES_DB: parrot_social_db
+      POSTGRES_USER: parrot_db_user
+      POSTGRES_PASSWORD: parrot_db_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persistent storage for database data
+      - postgres-data:/var/lib/postgresql
+    networks:
+      - project-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U projectuser -d projectdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot Backend Service
+  backend:
+    build:
+      context: ./ParrotServer_springboot
+      dockerfile: Dockerfile
+    container_name: parrot-server
+    environment:
+      # Database connection settings
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/parrot_social_db
+      SPRING_DATASOURCE_USERNAME: parrot_db_user
+      SPRING_DATASOURCE_PASSWORD: parrot_db_pass
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - project-network
+
+  # Angular Frontend Service
+  frontend:
+    build:
+      context: ./ParrotFrontend_angular
+      dockerfile: Dockerfile
+    container_name: parrot-client
+    environment:
+      # Backend API URL (accessible from browser)
+      API_URL: http://localhost:8080
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    networks:
+      - project-network
+    volumes:
+      # Mount source code for live reloading during development
+      - ./ParrotFrontend_angular:/app
+      - /app/node_modules
+
+# Named volume for persistent database storage
+volumes:
+  postgres-data:
+    driver: local
+
+# Network for inter-container communication
+networks:
+  project-network:
+    driver: bridge
