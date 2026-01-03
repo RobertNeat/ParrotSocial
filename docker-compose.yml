@@ -17,7 +17,7 @@ services:
     networks:
       - project-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U projectuser -d projectdb"]
+      test: ["CMD-SHELL", "pg_isready -U parrot_db_user -d parrot_social_db"]
       interval: 10s
       timeout: 5s
       retries: 5
