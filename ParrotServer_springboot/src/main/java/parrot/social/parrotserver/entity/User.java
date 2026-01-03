@@ -33,6 +33,9 @@ public class User {
     @Column(length = 500)
     private String bio;
 
+    @Column(length = 50)
+    private String roles = "ROLE_USER";
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

@@ -1,8 +1,10 @@
 package parrot.social.parrotserver.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import parrot.social.parrotserver.dto.RegisterRequest;
 import parrot.social.parrotserver.entity.User;
 import parrot.social.parrotserver.repository.UserRepository;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
@@ -79,5 +82,24 @@ public class UserService {
             throw new IllegalArgumentException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public User registerUser(RegisterRequest registerRequest) {
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setDisplayName(registerRequest.getDisplayName());
+        user.setRoles("ROLE_USER");
+
+        return userRepository.save(user);
     }
 }

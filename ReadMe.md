@@ -60,6 +60,8 @@ All stack is contnainerized from the start (even the development can be made in 
 # Start all services
 docker-compose up -d
 
+docker-compose ip -d --build  <-- to rebuild the existing containers if the code changed
+
 # Stop all services (data persists)
 docker-compose down
 
