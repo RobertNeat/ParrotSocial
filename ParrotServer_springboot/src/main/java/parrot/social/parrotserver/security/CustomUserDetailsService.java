@@ -20,9 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = userRepository.findByUsernameOrEmail(login, login)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with login: " + login));
 
         List<SimpleGrantedAuthority> authorities = Arrays.stream(user.getRoles().split(","))
                 .map(String::trim)
@@ -34,5 +34,26 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getPassword(),
                 authorities
         );
+    }
+
+    public UserDetails loadUserById(Long userId) throws UsernameNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+
+        List<SimpleGrantedAuthority> authorities = Arrays.stream(user.getRoles().split(","))
+                .map(String::trim)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getId().toString(),
+                user.getPassword(),
+                authorities
+        );
+    }
+
+    public User getUserByLogin(String login) throws UsernameNotFoundException {
+        return userRepository.findByUsernameOrEmail(login, login)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with login: " + login));
     }
 }

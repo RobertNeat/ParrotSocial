@@ -27,8 +27,9 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public Long extractUserId(String token) {
+        String userIdStr = extractClaim(token, Claims::getSubject);
+        return Long.parseLong(userIdStr);
     }
 
     public Date extractExpiration(String token) {
@@ -52,15 +53,15 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(Long userId) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, userId.toString());
     }
 
-    public String generateToken(String username, String roles) {
+    public String generateToken(Long userId, String roles) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roles);
-        return createToken(claims, username);
+        return createToken(claims, userId.toString());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -73,9 +74,9 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public Boolean validateToken(String token, Long userId) {
+        final Long extractedUserId = extractUserId(token);
+        return (extractedUserId.equals(userId) && !isTokenExpired(token));
     }
 
     public Boolean validateToken(String token) {

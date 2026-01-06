@@ -49,21 +49,12 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Schema(
         description = "Encrypted password (write-only)",
-        example = "SecurePassword123!",
+        example = "john_doe",
         requiredMode = Schema.RequiredMode.REQUIRED,
         format = "password",
         accessMode = Schema.AccessMode.WRITE_ONLY
     )
     private String password;
-
-    @Column(length = 100)
-    @Schema(
-        description = "User's display name",
-        example = "John Doe",
-        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-        maxLength = 100
-    )
-    private String displayName;
 
     @Column(length = 500)
     @Schema(

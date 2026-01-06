@@ -71,6 +71,13 @@ docker-compose down -v
 
 *all changes in angular will be updated each 2000 ms (springboot needs to be rebuilt to take effect and the docker image needs to be built as well)
 
+## Import postman collection
+
+You can import dollection directly from swagger openapi3 by collection>import
+"http://localhost:8080/v3/api-docs"
+
+Note: the docker must run the application and the URL needs to be accessible for postman to perform the import
+
 ## Important notes for the development
 
 0. Set up springboot-database connection to ensure the data ban be saved and read from-to database

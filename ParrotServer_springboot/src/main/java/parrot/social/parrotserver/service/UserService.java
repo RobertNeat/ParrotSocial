@@ -66,7 +66,6 @@ public class UserService {
 
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
-        user.setDisplayName(userDetails.getDisplayName());
         user.setBio(userDetails.getBio());
 
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
@@ -97,7 +96,6 @@ public class UserService {
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setDisplayName(registerRequest.getDisplayName());
         user.setRoles("ROLE_USER");
 
         return userRepository.save(user);

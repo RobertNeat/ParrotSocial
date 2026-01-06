@@ -1,6 +1,8 @@
 package parrot.social.parrotserver.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,14 @@ public class LoginResponse {
         requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String username;
+
+    @Schema(
+            description = "Valid email address",
+            example = "john.doe@example.com",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            format = "email"
+    )
+    private String email;
 
     @Schema(
         description = "User roles (comma-separated)",

@@ -37,7 +37,7 @@ public class RegisterRequest {
 
     @Schema(
         description = "Password (minimum 6 characters)",
-        example = "SecurePassword123!",
+        example = "john_doe",
         requiredMode = Schema.RequiredMode.REQUIRED,
         minLength = 6,
         format = "password"
@@ -45,13 +45,4 @@ public class RegisterRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
-
-    @Schema(
-        description = "Display name for the user profile (optional, max 100 characters)",
-        example = "John Doe",
-        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-        maxLength = 100
-    )
-    @Size(max = 100, message = "Display name must not exceed 100 characters")
-    private String displayName;
 }

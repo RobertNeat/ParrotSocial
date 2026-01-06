@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import parrot.social.parrotserver.dto.LoginRequest;
 import parrot.social.parrotserver.dto.LoginResponse;
@@ -27,7 +28,7 @@ import parrot.social.parrotserver.service.UserService;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "User authentication and registration endpoints")
 public class AuthController {
@@ -68,10 +69,10 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/jwt_token")
     @Operation(
         summary = "Authenticate user",
-        description = "Authenticates a user with username and password. Returns a JWT token for subsequent API requests."
+        description = "Authenticates a user with username/email and password. Returns a JWT token for subsequent API requests."
     )
     @ApiResponses(value = {
         @ApiResponse(
@@ -95,7 +96,7 @@ public class AuthController {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
+                            loginRequest.getLogin(),
                             loginRequest.getPassword()
                     )
             );
@@ -105,9 +106,12 @@ public class AuthController {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.joining(","));
 
-            String token = jwtUtil.generateToken(userDetails.getUsername(), roles);
+            User user = userService.getUserByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            LoginResponse response = new LoginResponse(token, userDetails.getUsername(), roles);
+            String token = jwtUtil.generateToken(user.getId(), roles);
+
+            LoginResponse response = new LoginResponse(token, user.getUsername(), user.getEmail(), roles);
             return ResponseEntity.ok(response);
 
         } catch (BadCredentialsException e) {
