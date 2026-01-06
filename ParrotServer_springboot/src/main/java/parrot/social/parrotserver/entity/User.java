@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -56,15 +57,6 @@ public class User {
     )
     private String password;
 
-    @Column(length = 500)
-    @Schema(
-        description = "User biography or description",
-        example = "Software developer passionate about open source",
-        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-        maxLength = 500
-    )
-    private String bio;
-
     @Column(length = 50)
     @Schema(
         description = "User roles (comma-separated)",
@@ -73,6 +65,14 @@ public class User {
         accessMode = Schema.AccessMode.READ_ONLY
     )
     private String roles = "ROLE_USER";
+
+    @Column(name = "is_verified", nullable = false)
+    @Schema(
+        description = "Whether the user's email address has been verified",
+        example = "false",
+        defaultValue = "false"
+    )
+    private Boolean isVerified = false;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Schema(
@@ -89,6 +89,48 @@ public class User {
         accessMode = Schema.AccessMode.READ_ONLY
     )
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Schema(
+        description = "Posts created by this user",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Schema(
+        description = "Comments created by this user",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "uploadedBy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Schema(
+        description = "Media uploaded by this user",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private List<Media> uploadedMedia;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Schema(
+        description = "Stories created by this user",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private List<Story> stories;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Schema(
+        description = "Messages sent by this user",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private List<Message> sentMessages;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Schema(
+        description = "User profile information",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private UserProfile profile;
 
     @PrePersist
     protected void onCreate() {

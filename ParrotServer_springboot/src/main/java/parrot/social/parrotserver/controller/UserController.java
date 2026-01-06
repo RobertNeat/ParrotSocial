@@ -117,32 +117,35 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    @Operation(
-        summary = "Create a new user",
-        description = "Creates a new user with the provided information. This endpoint is for administrative purposes."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "201",
-            description = "User successfully created",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
-        ),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid input or user already exists",
-            content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "\"Username already exists\""))
-        ),
-        @ApiResponse(responseCode = "401", description = "Unauthorized - JWT token missing or invalid")
-    })
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        try {
-            User createdUser = userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    //[!!!] only the authorization can create a user (the user controller only can write to the userprofile eg. create a userprofile for existing user)
+    //the userprofile controller can create a userprofile for existing user
+    //user controller cannot create users!!
+//    @PostMapping
+//    @Operation(
+//        summary = "Create a new user",
+//        description = "Creates a new user with the provided information. This endpoint is for administrative purposes."
+//    )
+//    @ApiResponses(value = {
+//        @ApiResponse(
+//            responseCode = "201",
+//            description = "User successfully created",
+//            content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+//        ),
+//        @ApiResponse(
+//            responseCode = "400",
+//            description = "Invalid input or user already exists",
+//            content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "\"Username already exists\""))
+//        ),
+//        @ApiResponse(responseCode = "401", description = "Unauthorized - JWT token missing or invalid")
+//    })
+//    public ResponseEntity<?> createUser(@RequestBody User user) {
+//        try {
+//            User createdUser = userService.createUser(user);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @PutMapping("/{id}")
     @Operation(
